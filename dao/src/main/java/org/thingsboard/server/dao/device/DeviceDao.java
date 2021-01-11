@@ -23,6 +23,7 @@ import org.thingsboard.server.common.data.id.TenantId;
 import org.thingsboard.server.common.data.page.PageData;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.dao.Dao;
+import org.thingsboard.server.dao.TenantEntityDao;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,7 @@ import java.util.UUID;
  * The Interface DeviceDao.
  *
  */
-public interface DeviceDao extends Dao<Device> {
+public interface DeviceDao extends Dao<Device>, TenantEntityDao {
 
     /**
      * Find device info by id.
@@ -90,6 +91,16 @@ public interface DeviceDao extends Dao<Device> {
     PageData<DeviceInfo> findDeviceInfosByTenantIdAndType(UUID tenantId, String type, PageLink pageLink);
 
     /**
+     * Find device infos by tenantId, deviceProfileId and page link.
+     *
+     * @param tenantId the tenantId
+     * @param deviceProfileId the deviceProfileId
+     * @param pageLink the page link
+     * @return the list of device info objects
+     */
+    PageData<DeviceInfo> findDeviceInfosByTenantIdAndDeviceProfileId(UUID tenantId, UUID deviceProfileId, PageLink pageLink);
+
+    /**
      * Find devices by tenantId and devices Ids.
      *
      * @param tenantId the tenantId
@@ -140,6 +151,16 @@ public interface DeviceDao extends Dao<Device> {
      */
     PageData<DeviceInfo> findDeviceInfosByTenantIdAndCustomerIdAndType(UUID tenantId, UUID customerId, String type, PageLink pageLink);
 
+    /**
+     * Find device infos by tenantId, customerId, deviceProfileId and page link.
+     *
+     * @param tenantId the tenantId
+     * @param customerId the customerId
+     * @param deviceProfileId the deviceProfileId
+     * @param pageLink the page link
+     * @return the list of device info objects
+     */
+    PageData<DeviceInfo> findDeviceInfosByTenantIdAndCustomerIdAndDeviceProfileId(UUID tenantId, UUID customerId, UUID deviceProfileId, PageLink pageLink);
 
     /**
      * Find devices by tenantId, customerId and devices Ids.
@@ -166,4 +187,32 @@ public interface DeviceDao extends Dao<Device> {
      * @return the list of tenant device type objects
      */
     ListenableFuture<List<EntitySubtype>> findTenantDeviceTypesAsync(UUID tenantId);
+
+    /**
+     * Find devices by tenantId and device id.
+     * @param tenantId the tenant Id
+     * @param id the device Id
+     * @return the device object
+     */
+    Device findDeviceByTenantIdAndId(TenantId tenantId, UUID id);
+
+    /**
+     * Find devices by tenantId and device id.
+     * @param tenantId tenantId the tenantId
+     * @param id the deviceId
+     * @return the device object
+     */
+    ListenableFuture<Device> findDeviceByTenantIdAndIdAsync(TenantId tenantId, UUID id);
+
+    Long countDevicesByDeviceProfileId(TenantId tenantId, UUID deviceProfileId);
+
+    /**
+     * Find devices by tenantId, profileId and page link.
+     *
+     * @param tenantId the tenantId
+     * @param profileId the profileId
+     * @param pageLink the page link
+     * @return the list of device objects
+     */
+    PageData<Device> findDevicesByTenantIdAndProfileId(UUID tenantId, UUID profileId, PageLink pageLink);
 }

@@ -20,7 +20,7 @@ import { SharedModule } from '@app/shared/shared.module';
 import { EntitiesTableWidgetComponent } from '@home/components/widget/lib/entities-table-widget.component';
 import { DisplayColumnsPanelComponent } from '@home/components/widget/lib/display-columns-panel.component';
 import { AlarmsTableWidgetComponent } from '@home/components/widget/lib/alarms-table-widget.component';
-import { AlarmStatusFilterPanelComponent } from '@home/components/widget/lib/alarm-status-filter-panel.component';
+import { AlarmFilterPanelComponent } from '@home/components/widget/lib/alarm-filter-panel.component';
 import { SharedHomeComponentsModule } from '@home/components/shared-home-components.module';
 import { TimeseriesTableWidgetComponent } from '@home/components/widget/lib/timeseries-table-widget.component';
 import { EntitiesHierarchyWidgetComponent } from '@home/components/widget/lib/entities-hierarchy-widget.component';
@@ -32,7 +32,7 @@ import {
 } from '@home/components/widget/lib/date-range-navigator/date-range-navigator.component';
 import { MultipleInputWidgetComponent } from './lib/multiple-input-widget.component';
 import { TripAnimationComponent } from './trip-animation/trip-animation.component';
-import { WebCameraInputWidgetComponent } from './lib/web-camera-input.component';
+import { PhotoCameraInputWidgetComponent } from './lib/photo-camera-input.component';
 import { GatewayFormComponent } from './lib/gateway/gateway-form.component';
 import { ImportExportService } from '@home/components/import-export/import-export.service';
 
@@ -40,7 +40,7 @@ import { ImportExportService } from '@home/components/import-export/import-expor
   declarations:
     [
       DisplayColumnsPanelComponent,
-      AlarmStatusFilterPanelComponent,
+      AlarmFilterPanelComponent,
       EntitiesTableWidgetComponent,
       AlarmsTableWidgetComponent,
       TimeseriesTableWidgetComponent,
@@ -49,7 +49,7 @@ import { ImportExportService } from '@home/components/import-export/import-expor
       DateRangeNavigatorPanelComponent,
       MultipleInputWidgetComponent,
       TripAnimationComponent,
-      WebCameraInputWidgetComponent,
+      PhotoCameraInputWidgetComponent,
       GatewayFormComponent
     ],
   imports: [
@@ -67,7 +67,7 @@ import { ImportExportService } from '@home/components/import-export/import-expor
     DateRangeNavigatorWidgetComponent,
     MultipleInputWidgetComponent,
     TripAnimationComponent,
-    WebCameraInputWidgetComponent,
+    PhotoCameraInputWidgetComponent,
     GatewayFormComponent
   ],
   providers: [

@@ -49,7 +49,11 @@ export enum ActionType {
   ALARM_CLEAR = 'ALARM_CLEAR',
   LOGIN = 'LOGIN',
   LOGOUT = 'LOGOUT',
-  LOCKOUT = 'LOCKOUT'
+  LOCKOUT = 'LOCKOUT',
+  ASSIGNED_FROM_TENANT = 'ASSIGNED_FROM_TENANT',
+  ASSIGNED_TO_TENANT = 'ASSIGNED_TO_TENANT',
+  PROVISION_SUCCESS = 'PROVISION_SUCCESS',
+  PROVISION_FAILURE = 'PROVISION_FAILURE'
 }
 
 export enum ActionStatus {
@@ -79,7 +83,11 @@ export const actionTypeTranslations = new Map<ActionType, string>(
     [ActionType.ALARM_CLEAR, 'audit-log.type-alarm-clear'],
     [ActionType.LOGIN, 'audit-log.type-login'],
     [ActionType.LOGOUT, 'audit-log.type-logout'],
-    [ActionType.LOCKOUT, 'audit-log.type-lockout']
+    [ActionType.LOCKOUT, 'audit-log.type-lockout'],
+    [ActionType.ASSIGNED_FROM_TENANT, 'audit-log.type-assigned-from-tenant'],
+    [ActionType.ASSIGNED_TO_TENANT, 'audit-log.type-assigned-to-tenant'],
+    [ActionType.PROVISION_SUCCESS, 'audit-log.type-provision-success'],
+    [ActionType.PROVISION_FAILURE, 'audit-log.type-provision-failure']
   ]
 );
 

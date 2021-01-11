@@ -23,6 +23,7 @@ import { AppState } from '@core/core.state';
 import { EntityAction } from '@home/models/entity/entity-component.models';
 import { EntityTableConfig } from '@home/models/entity/entities-table-config.models';
 import { PageLink } from '@shared/models/page/page-link';
+import { deepTrim } from '@core/utils';
 
 // @dynamic
 @Directive()
@@ -57,14 +58,13 @@ export abstract class EntityComponent<T extends BaseData<HasId>,
   }
 
   get isAdd(): boolean {
-    return this.entityValue && !this.entityValue.id;
+    return this.entityValue && (!this.entityValue.id || !this.entityValue.id.id);
   }
 
   @Input()
   set entity(entity: T) {
     this.entityValue = entity;
     if (this.entityForm) {
-      this.entityForm.reset(undefined, {emitEvent: false});
       this.entityForm.markAsPristine();
       this.updateForm(entity);
     }
@@ -115,7 +115,7 @@ export abstract class EntityComponent<T extends BaseData<HasId>,
   }
 
   prepareFormValue(formValue: any): any {
-    return formValue;
+    return deepTrim(formValue);
   }
 
   protected setEntitiesTableConfig(entitiesTableConfig: C) {

@@ -35,22 +35,27 @@ import { BaseData, HasId } from '@shared/models/base-data';
 
 export enum EntityType {
   TENANT = 'TENANT',
+  TENANT_PROFILE = 'TENANT_PROFILE',
   CUSTOMER = 'CUSTOMER',
   USER = 'USER',
   DASHBOARD = 'DASHBOARD',
   ASSET = 'ASSET',
   DEVICE = 'DEVICE',
+  DEVICE_PROFILE = 'DEVICE_PROFILE',
   ALARM = 'ALARM',
   RULE_CHAIN = 'RULE_CHAIN',
   RULE_NODE = 'RULE_NODE',
   ENTITY_VIEW = 'ENTITY_VIEW',
   WIDGETS_BUNDLE = 'WIDGETS_BUNDLE',
-  WIDGET_TYPE = 'WIDGET_TYPE'
+  WIDGET_TYPE = 'WIDGET_TYPE',
+  API_USAGE_STATE = 'API_USAGE_STATE'
 }
 
 export enum AliasEntityType {
   CURRENT_CUSTOMER = 'CURRENT_CUSTOMER',
-  CURRENT_TENANT = 'CURRENT_TENANT'
+  CURRENT_TENANT = 'CURRENT_TENANT',
+  CURRENT_USER = 'CURRENT_USER',
+  CURRENT_USER_OWNER = 'CURRENT_USER_OWNER'
 }
 
 export interface EntityTypeTranslation {
@@ -84,6 +89,20 @@ export const entityTypeTranslations = new Map<EntityType | AliasEntityType, Enti
         noEntities: 'tenant.no-tenants-text',
         search: 'tenant.search',
         selectedEntities: 'tenant.selected-tenants'
+      }
+    ],
+    [
+      EntityType.TENANT_PROFILE,
+      {
+        type: 'entity.type-tenant-profile',
+        typePlural: 'entity.type-tenant-profiles',
+        list: 'entity.list-of-tenant-profiles',
+        nameStartsWith: 'entity.tenant-profile-name-starts-with',
+        details: 'tenant-profile.tenant-profile-details',
+        add: 'tenant-profile.add',
+        noEntities: 'tenant-profile.no-tenant-profiles-text',
+        search: 'tenant-profile.search',
+        selectedEntities: 'tenant-profile.selected-tenant-profiles'
       }
     ],
     [
@@ -126,6 +145,20 @@ export const entityTypeTranslations = new Map<EntityType | AliasEntityType, Enti
         noEntities: 'device.no-devices-text',
         search: 'device.search',
         selectedEntities: 'device.selected-devices'
+      }
+    ],
+    [
+      EntityType.DEVICE_PROFILE,
+      {
+        type: 'entity.type-device-profile',
+        typePlural: 'entity.type-device-profiles',
+        list: 'entity.list-of-device-profiles',
+        nameStartsWith: 'entity.device-profile-name-starts-with',
+        details: 'device-profile.device-profile-details',
+        add: 'device-profile.add',
+        noEntities: 'device-profile.no-device-profiles-text',
+        search: 'device-profile.search',
+        selectedEntities: 'device-profile.selected-device-profiles'
       }
     ],
     [
@@ -207,6 +240,12 @@ export const entityTypeTranslations = new Map<EntityType | AliasEntityType, Enti
       }
     ],
     [
+      EntityType.API_USAGE_STATE,
+      {
+        type: 'entity.type-api-usage-state'
+      }
+    ],
+    [
       EntityType.WIDGETS_BUNDLE,
       {
         details: 'widgets-bundle.widgets-bundle-details',
@@ -229,6 +268,20 @@ export const entityTypeTranslations = new Map<EntityType | AliasEntityType, Enti
         type: 'entity.type-current-tenant',
         list: 'entity.type-current-tenant'
       }
+    ],
+    [
+      AliasEntityType.CURRENT_USER,
+      {
+        type: 'entity.type-current-user',
+        list: 'entity.type-current-user'
+      }
+    ],
+    [
+      AliasEntityType.CURRENT_USER_OWNER,
+      {
+        type: 'entity.type-current-user-owner',
+        list: 'entity.type-current-user-owner'
+      }
     ]
   ]
 );
@@ -239,6 +292,12 @@ export const entityTypeResources = new Map<EntityType, EntityTypeResource<BaseDa
       EntityType.TENANT,
       {
         helpLinkId: 'tenants'
+      }
+    ],
+    [
+      EntityType.TENANT_PROFILE,
+      {
+        helpLinkId: 'tenantProfiles'
       }
     ],
     [
@@ -257,6 +316,12 @@ export const entityTypeResources = new Map<EntityType, EntityTypeResource<BaseDa
       EntityType.DEVICE,
       {
         helpLinkId: 'devices'
+      }
+    ],
+    [
+      EntityType.DEVICE_PROFILE,
+      {
+        helpLinkId: 'deviceProfiles'
       }
     ],
     [

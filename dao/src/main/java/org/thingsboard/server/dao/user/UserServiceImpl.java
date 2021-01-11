@@ -24,8 +24,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.thingsboard.server.common.data.Customer;
+import org.thingsboard.server.common.data.EntityType;
 import org.thingsboard.server.common.data.Tenant;
 import org.thingsboard.server.common.data.User;
 import org.thingsboard.server.common.data.id.CustomerId;
@@ -36,6 +38,7 @@ import org.thingsboard.server.common.data.page.PageData;
 import org.thingsboard.server.common.data.page.PageLink;
 import org.thingsboard.server.common.data.security.Authority;
 import org.thingsboard.server.common.data.security.UserCredentials;
+import org.thingsboard.server.common.data.tenant.profile.DefaultTenantProfileConfiguration;
 import org.thingsboard.server.dao.customer.CustomerDao;
 import org.thingsboard.server.dao.entity.AbstractEntityService;
 import org.thingsboard.server.dao.exception.DataValidationException;
@@ -43,10 +46,10 @@ import org.thingsboard.server.dao.exception.IncorrectParameterException;
 import org.thingsboard.server.dao.model.ModelConstants;
 import org.thingsboard.server.dao.service.DataValidator;
 import org.thingsboard.server.dao.service.PaginatedRemover;
+import org.thingsboard.server.dao.tenant.TbTenantProfileCache;
 import org.thingsboard.server.dao.tenant.TenantDao;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.thingsboard.server.dao.service.Validator.validateId;
@@ -85,6 +88,10 @@ public class UserServiceImpl extends AbstractEntityService implements UserServic
     @Autowired
     private CustomerDao customerDao;
 
+    @Autowired
+    @Lazy
+    private TbTenantProfileCache tenantProfileCache;
+
     @Override
     public User findUserByEmail(TenantId tenantId, String email) {
         log.trace("Executing findUserByEmail [{}]", email);
@@ -114,7 +121,7 @@ public class UserServiceImpl extends AbstractEntityService implements UserServic
     public User saveUser(User user) {
         log.trace("Executing saveUser [{}]", user);
         userValidator.validate(user, User::getTenantId);
-        if (user.getId() == null && !userLoginCaseSensitive) {
+        if (!userLoginCaseSensitive) {
             user.setEmail(user.getEmail().toLowerCase());
         }
         User savedUser = userDao.save(user.getTenantId(), user);
@@ -218,6 +225,14 @@ public class UserServiceImpl extends AbstractEntityService implements UserServic
         userCredentialsDao.removeById(tenantId, userCredentials.getUuidId());
         deleteEntityRelations(tenantId, userId);
         userDao.removeById(tenantId, userId.getId());
+    }
+
+    @Override
+    public PageData<User> findUsersByTenantId(TenantId tenantId, PageLink pageLink) {
+        log.trace("Executing findUsersByTenantId, tenantId [{}], pageLink [{}]", tenantId, pageLink);
+        validateId(tenantId, INCORRECT_TENANT_ID + tenantId);
+        validatePageLink(pageLink);
+        return userDao.findByTenantId(tenantId.getId(), pageLink);
     }
 
     @Override
@@ -357,6 +372,16 @@ public class UserServiceImpl extends AbstractEntityService implements UserServic
 
     private DataValidator<User> userValidator =
             new DataValidator<User>() {
+                @Override
+                protected void validateCreate(TenantId tenantId, User user) {
+                    if (!user.getTenantId().getId().equals(ModelConstants.NULL_UUID)) {
+                        DefaultTenantProfileConfiguration profileConfiguration =
+                                (DefaultTenantProfileConfiguration) tenantProfileCache.get(tenantId).getProfileData().getConfiguration();
+                        long maxUsers = profileConfiguration.getMaxUsers();
+                        validateNumberOfEntitiesPerTenant(tenantId, userDao, maxUsers, EntityType.USER);
+                    }
+                }
+
                 @Override
                 protected void validateDataImpl(TenantId requestTenantId, User user) {
                     if (StringUtils.isEmpty(user.getEmail())) {

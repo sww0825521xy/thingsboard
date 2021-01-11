@@ -26,6 +26,7 @@ RUN chmod a+x /tmp/*.sh \
     && mv /tmp/stop-db.sh /usr/bin
 
 RUN dpkg -i /tmp/${pkg.name}.deb
+RUN rm /tmp/${pkg.name}.deb
 
 RUN systemctl --no-reload disable --now ${pkg.name}.service > /dev/null 2>&1 || :
 
@@ -42,6 +43,13 @@ ENV SPRING_DRIVER_CLASS_NAME=org.hsqldb.jdbc.JDBCDriver
 ENV SPRING_DATASOURCE_URL=jdbc:hsqldb:file:/data/db/thingsboardDb;sql.enforce_size=false;hsqldb.log_size=5
 ENV SPRING_DATASOURCE_USERNAME=sa
 ENV SPRING_DATASOURCE_PASSWORD=
+
+RUN mkdir -p /data
+RUN chown -R ${pkg.user}:${pkg.user} /data
+
+RUN chmod 555 ${pkg.installFolder}/bin/${pkg.name}.jar
+
+USER ${pkg.user}
 
 EXPOSE 9090
 EXPOSE 1883
